@@ -22,7 +22,7 @@ namespace SimpleCalculator.ViewModel
         }
 
         public string CheckResultText
-            => String.IsNullOrEmpty(_currentText) ? string.Empty : Counting(RPNConverter.Convert(_currentText)).ToString();
+            => String.IsNullOrEmpty(_currentText) ? string.Empty : CountingExpression(RPNConverter.Convert(_currentText)).ToString();
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -59,48 +59,48 @@ namespace SimpleCalculator.ViewModel
         /// <summary>
         /// Подсчет выражения преобразованной в формат обратной польской нотации строки
         /// </summary>
-        public static double Counting(string input)
+        public static double CountingExpression(string inputText)
         {
-            double result = 0;
-            Stack<double> temp = new Stack<double>();
+            double expressionResult = 0;
+            Stack<double> numbersStack = new Stack<double>();
             try
             {
-                for (int i = 0; i < input.Length; i++)
+                for (int i = 0; i < inputText.Length; i++)
                 {
-                    if (Char.IsDigit(input[i]) || (input[i] == '-' && Char.IsDigit(input[i + 1])))
+                    if (Char.IsDigit(inputText[i]) || (inputText[i] == '-' && Char.IsDigit(inputText[i + 1])))
                     {
-                        string tempNum = string.Empty;
-                        if (input[i] == '-')
+                        string tempNumToPushStack = string.Empty;
+                        if (inputText[i] == '-')
                         {
                             i++;
-                            tempNum += "-";
+                            tempNumToPushStack += "-";
                         }
-                        while (!ExpressionsChecker.IsDelimeter(input[i]) && !ExpressionsChecker.IsOperator(input[i]))
+                        while (!ExpressionsChecker.IsDelimeter(inputText[i]) && !ExpressionsChecker.IsOperator(inputText[i]))
                         {
-                            tempNum += input[i];
+                            tempNumToPushStack += inputText[i];
                             i++;
-                            if (i == input.Length) break;
+                            if (i == inputText.Length) break;
                         }
-                        temp.Push(double.Parse(tempNum));
+                        numbersStack.Push(double.Parse(tempNumToPushStack));
                         i--;
                     }
-                    else if (ExpressionsChecker.IsOperator(input[i]))
+                    else if (ExpressionsChecker.IsOperator(inputText[i]))
                     {
-                        double firstNum = temp.Pop();
-                        double secondNum = temp.Pop();
+                        double firstNum = numbersStack.Pop();
+                        double secondNum = numbersStack.Pop();
 
-                        switch (input[i])
+                        switch (inputText[i])
                         {
-                            case '-': result = MathFuncs.Subtract(secondNum, firstNum); break;
-                            case '+': result = MathFuncs.Addition(secondNum, firstNum); break;
-                            case '*': result = MathFuncs.Multiply(secondNum, firstNum); break;
-                            case '/': result = MathFuncs.Divide(secondNum, firstNum); break;
+                            case '-': expressionResult = MathFuncs.Subtract(secondNum, firstNum); break;
+                            case '+': expressionResult = MathFuncs.Addition(secondNum, firstNum); break;
+                            case '*': expressionResult = MathFuncs.Multiply(secondNum, firstNum); break;
+                            case '/': expressionResult = MathFuncs.Divide(secondNum, firstNum); break;
                         }
-                        temp.Push(result);
+                        numbersStack.Push(expressionResult);
                     }
                 }
 
-                return temp.Peek();
+                return numbersStack.Peek();
             }
             catch (Exception)
             {
