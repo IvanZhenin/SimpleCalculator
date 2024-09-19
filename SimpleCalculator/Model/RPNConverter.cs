@@ -17,18 +17,20 @@ namespace SimpleCalculator.Model
                 if (ExpressionsChecker.IsDelimeter(inputText[i]))
                     continue;
 
-                if (Char.IsDigit(inputText[i]))
+                if (Char.IsDigit(inputText[i]) || (inputText[i] == '-' && Char.IsDigit(inputText[i + 1]) && (i == 0 || inputText[i - 1] == '(')))
                 {
-                    while (!ExpressionsChecker.IsOperator(inputText[i]) && !ExpressionsChecker.IsDelimeter(inputText[i]))
+                    if (inputText[i] == '-') 
                     {
-                        outputText += inputText[i];
                         i++;
-
-                        if (i == inputText.Length) break;
+                        outputText += "-";
                     }
 
+                    for (; i < inputText.Length && !ExpressionsChecker.IsOperator(inputText[i]) && !ExpressionsChecker.IsDelimeter(inputText[i]); i++) 
+                        outputText += inputText[i];
+                    
                     outputText += " ";
                     i--;
+                    continue;
                 }
 
                 if (ExpressionsChecker.IsOperator(inputText[i]))
@@ -47,22 +49,6 @@ namespace SimpleCalculator.Model
                     }
                     else
                     {
-                        if (inputText[i] == '-' && (i == 0 || inputText[i - 1] == '('))
-                        {
-                            outputText += "-";
-                            i++;
-                            while (!ExpressionsChecker.IsOperator(inputText[i]) && !ExpressionsChecker.IsDelimeter(inputText[i]))
-                            {
-                                outputText += inputText[i];
-                                i++;
-                                if (i == inputText.Length) break;
-                            }
-
-                            outputText += " ";
-                            i--;
-                            continue;
-                        }
-
                         while (operationsStack.Count > 0 && ExpressionsChecker.GetPriority(inputText[i]) <= ExpressionsChecker.GetPriority(operationsStack.Peek()))
                         {
                             outputText += operationsStack.Pop() + " ";
