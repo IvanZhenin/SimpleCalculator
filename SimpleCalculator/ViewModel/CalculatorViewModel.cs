@@ -75,12 +75,10 @@ namespace SimpleCalculator.ViewModel
                             i++;
                             tempNumToPushStack += "-";
                         }
-                        while (!ExpressionsChecker.IsDelimeter(inputText[i]) && !ExpressionsChecker.IsOperator(inputText[i]))
-                        {
+
+                        for (; i < inputText.Length && !ExpressionsChecker.IsDelimeter(inputText[i]) && !ExpressionsChecker.IsOperator(inputText[i]); i++)
                             tempNumToPushStack += inputText[i];
-                            i++;
-                            if (i == inputText.Length) break;
-                        }
+                        
                         numbersStack.Push(double.Parse(tempNumToPushStack));
                         i--;
                     }
