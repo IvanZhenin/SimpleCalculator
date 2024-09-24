@@ -18,6 +18,8 @@ namespace SimpleCalculator.ViewModel
             {
                 _currentText = value;
                 OnPropertyChanged(nameof(CheckCurrentText));
+                OnPropertyChanged(nameof(DeleteSymbolCommand));
+                OnPropertyChanged(nameof(DeleteTextCommand));
             }
         }
 
@@ -47,14 +49,16 @@ namespace SimpleCalculator.ViewModel
             {
                 if (!string.IsNullOrEmpty(CheckCurrentText))
                     CheckCurrentText = CheckCurrentText[..^1];
-            });
+                if (CheckCurrentText.Length <= 0)
+                    OnPropertyChanged(nameof(CheckResultText));
+            }, (obj) => CheckCurrentText.Length > 0);
 
         public ICommand DeleteTextCommand
             => new RelayCommand((obj) =>
             {
                 CheckCurrentText = string.Empty;
                 OnPropertyChanged(nameof(CheckResultText));
-            });
+            }, (obj) => CheckCurrentText.Length > 0);
 
         /// <summary>
         /// Подсчет выражения преобразованной в формат обратной польской нотации строки
@@ -78,22 +82,15 @@ namespace SimpleCalculator.ViewModel
 
                         for (; i < inputText.Length && !ExpressionsChecker.IsDelimeter(inputText[i]) && !ExpressionsChecker.IsOperator(inputText[i]); i++)
                             tempNumToPushStack += inputText[i];
-                        
+
                         numbersStack.Push(double.Parse(tempNumToPushStack));
                         i--;
                     }
                     else if (ExpressionsChecker.IsOperator(inputText[i]))
                     {
-                        double firstNum = numbersStack.Pop();
                         double secondNum = numbersStack.Pop();
-
-                        switch (inputText[i])
-                        {
-                            case '-': expressionResult = MathFuncs.Subtract(secondNum, firstNum); break;
-                            case '+': expressionResult = MathFuncs.Addition(secondNum, firstNum); break;
-                            case '*': expressionResult = MathFuncs.Multiply(secondNum, firstNum); break;
-                            case '/': expressionResult = MathFuncs.Divide(secondNum, firstNum); break;
-                        }
+                        double firstNum = numbersStack.Pop();
+                        expressionResult = OperationTarget.GetOperation(inputText[i]).Operation(firstNum, secondNum);
                         numbersStack.Push(expressionResult);
                     }
                 }
