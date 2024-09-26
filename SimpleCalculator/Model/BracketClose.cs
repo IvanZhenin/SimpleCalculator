@@ -6,6 +6,6 @@ namespace SimpleCalculator.Model
     public class BracketClose : IOperator
     {
         public char Symbol => ')';
-        public byte Priority => (byte)OperatorPriority.BracketClose;
+        public OperatorPriority Priority => OperatorPriority.BracketClose;
     }
 }
