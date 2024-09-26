@@ -21,7 +21,7 @@ namespace SimpleCalculator.Helpers
         {
             try
             {
-                return OperationsRepository.OperatorList.First(p => p.Symbol == symbol).Priority;
+                return (byte)OperationsRepository.OperatorList.First(p => p.Symbol == symbol).Priority;
             }
             catch (Exception)
             {
