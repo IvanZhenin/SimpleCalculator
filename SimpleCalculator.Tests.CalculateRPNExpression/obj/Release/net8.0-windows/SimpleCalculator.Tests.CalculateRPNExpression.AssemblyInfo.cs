@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SimpleCalculator.Tests.CalculateRPNExpression")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afbe246965524bae921b8603ffb977a806cc803a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9159b9d5419e0d7fb4a5f293db056758bb23a317")]
 [assembly: System.Reflection.AssemblyProductAttribute("SimpleCalculator.Tests.CalculateRPNExpression")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SimpleCalculator.Tests.CalculateRPNExpression")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,4 +1,4 @@
-using SimpleCalculator.Model;
+using SimpleCalculator.Helpers;
 
 namespace SimpleCalculator.Tests.MathOperations
 {
@@ -12,7 +12,7 @@ namespace SimpleCalculator.Tests.MathOperations
             double b = 1;
             double expected = double.MaxValue;
 
-            double actual = OperationTarget.GetOperation('+').Operation(a, b);
+            double actual = OperatorRegistry.GetOperation('+').Operation(a, b);
 
             Assert.AreEqual(expected, actual);
         }
@@ -24,7 +24,7 @@ namespace SimpleCalculator.Tests.MathOperations
             double b = 0;
             double expected = double.NaN;
 
-            double actual = OperationTarget.GetOperation('/').Operation(a, b);
+            double actual = OperatorRegistry.GetOperation('/').Operation(a, b);
 
             Assert.AreEqual(expected, actual);
         }
@@ -36,7 +36,7 @@ namespace SimpleCalculator.Tests.MathOperations
             double b = 1;
             double expected = double.MinValue;
 
-            double actual = OperationTarget.GetOperation('-').Operation(a, b);
+            double actual = OperatorRegistry.GetOperation('-').Operation(a, b);
 
             Assert.AreEqual(expected, actual);
         }
@@ -48,7 +48,7 @@ namespace SimpleCalculator.Tests.MathOperations
             double b = double.MaxValue;
             double expected = double.PositiveInfinity;
 
-            double actual = OperationTarget.GetOperation('*').Operation(a, b);
+            double actual = OperatorRegistry.GetOperation('*').Operation(a, b);
 
             Assert.AreEqual(expected, actual);
         }
@@ -58,7 +58,7 @@ namespace SimpleCalculator.Tests.MathOperations
         {
             char incorrectSymbol = 'g';
 
-            Assert.ThrowsException<ArgumentException>(() => OperationTarget.GetOperation(incorrectSymbol));
+            Assert.ThrowsException<ArgumentException>(() => OperatorRegistry.GetOperation(incorrectSymbol));
         }
     }
 }

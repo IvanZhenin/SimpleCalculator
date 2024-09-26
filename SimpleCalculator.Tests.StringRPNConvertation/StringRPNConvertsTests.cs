@@ -1,4 +1,4 @@
-using SimpleCalculator.Model;
+using SimpleCalculator.RPNCalculator;
 
 namespace SimpleCalculator.Tests.StringRPNConvertation
 {
@@ -55,6 +55,20 @@ namespace SimpleCalculator.Tests.StringRPNConvertation
         {
             string input = "65*5*51*25*55-(-35)*5-(-3)";
             string expected = "65 5 * 51 * 25 * 55 * -35 5 * - -3 - ";
+
+            string actual = RPNConverter.Convert(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Тест некорректного ввода в строку
+        /// </summary>
+        [TestMethod]
+        public void Convert_UncorrectText_ToRpn_ReturnsEmpty()
+        {
+            string input = "fkdsoafo333fd--!11";
+            string expected = string.Empty;
 
             string actual = RPNConverter.Convert(input);
 
