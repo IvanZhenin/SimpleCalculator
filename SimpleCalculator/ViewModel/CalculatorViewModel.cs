@@ -1,5 +1,6 @@
 ﻿using SimpleCalculator.Helpers;
 using SimpleCalculator.Model;
+using SimpleCalculator.RPNCalculator;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -24,7 +25,7 @@ namespace SimpleCalculator.ViewModel
         }
 
         public string CheckResultText
-            => String.IsNullOrEmpty(_currentText) ? string.Empty : CountingExpression(RPNConverter.Convert(_currentText)).ToString();
+            => String.IsNullOrEmpty(_currentText) ? string.Empty : RPNCounter.CountExpression(RPNConverter.Convert(_currentText)).ToString();
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -59,48 +60,5 @@ namespace SimpleCalculator.ViewModel
                 CheckCurrentText = string.Empty;
                 OnPropertyChanged(nameof(CheckResultText));
             }, (obj) => CheckCurrentText.Length > 0);
-
-        /// <summary>
-        /// Подсчет выражения преобразованной в формат обратной польской нотации строки
-        /// </summary>
-        public static double CountingExpression(string inputText)
-        {
-            double expressionResult = 0;
-            Stack<double> numbersStack = new Stack<double>();
-            try
-            {
-                for (int i = 0; i < inputText.Length; i++)
-                {
-                    if (Char.IsDigit(inputText[i]) || (inputText[i] == '-' && Char.IsDigit(inputText[i + 1])))
-                    {
-                        string tempNumToPushStack = string.Empty;
-                        if (inputText[i] == '-')
-                        {
-                            i++;
-                            tempNumToPushStack += "-";
-                        }
-
-                        for (; i < inputText.Length && !ExpressionsChecker.IsDelimeter(inputText[i]) && !ExpressionsChecker.IsOperator(inputText[i]); i++)
-                            tempNumToPushStack += inputText[i];
-
-                        numbersStack.Push(double.Parse(tempNumToPushStack));
-                        i--;
-                    }
-                    else if (ExpressionsChecker.IsOperator(inputText[i]))
-                    {
-                        double secondNum = numbersStack.Pop();
-                        double firstNum = numbersStack.Pop();
-                        expressionResult = OperationTarget.GetOperation(inputText[i]).Operation(firstNum, secondNum);
-                        numbersStack.Push(expressionResult);
-                    }
-                }
-
-                return numbersStack.Peek();
-            }
-            catch (Exception)
-            {
-                return double.NaN;
-            }
-        }
     }
 }
