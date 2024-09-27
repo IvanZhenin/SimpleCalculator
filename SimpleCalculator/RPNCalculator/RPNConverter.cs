@@ -11,7 +11,7 @@ namespace SimpleCalculator.RPNCalculator
     {
         public static string Convert(string inputText)
         {
-            if (ExpressionChecker.IsCorrectStringExpression(inputText))
+            if (!ExpressionChecker.IsCorrectStringExpression(inputText))
                 return string.Empty;
 
             string outputText = string.Empty;
