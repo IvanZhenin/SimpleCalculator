@@ -4,7 +4,7 @@
     {
         BracketOpen = 0,
         BracketClose = 1,
-        AdditionSubtraction = 3,
-        MultiplicationDivision = 4,
+        AdditionSubtraction = 2,
+        MultiplicationDivision = 3,
     }
 }
