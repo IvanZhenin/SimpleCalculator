@@ -1,5 +1,6 @@
 ﻿using SimpleCalculator.Helpers;
 using SimpleCalculator.Model;
+using System.Text.RegularExpressions;
 
 namespace SimpleCalculator.RPNCalculator
 {
@@ -10,14 +11,14 @@ namespace SimpleCalculator.RPNCalculator
     {
         public static string Convert(string inputText)
         {
+            if (ExpressionChecker.IsCorrectStringExpression(inputText))
+                return string.Empty;
+
             string outputText = string.Empty;
             Stack<char> operationsStack = new Stack<char>();
 
             for (int i = 0; i < inputText.Length; i++)
             {
-                if (ExpressionChecker.IsInvalidSymbol(inputText[i]))
-                    return string.Empty;
-
                 if (ExpressionChecker.IsDelimeter(inputText[i]))
                     continue;
 
