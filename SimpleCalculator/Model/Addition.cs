@@ -1,12 +1,11 @@
-﻿using SimpleCalculator.Model.Enums;
-using SimpleCalculator.Model.Interfaces;
+﻿using SimpleCalculator.Model.Interfaces;
 
 namespace SimpleCalculator.Model
 {
     public class Addition : IOperation
     {
         public char Symbol => '+';
-        public OperatorPriority Priority => OperatorPriority.AdditionSubtraction;
+        public byte Priority => 2;
         public double Operation(double firstNum, double secondNum) => firstNum + secondNum;
     }
 }
